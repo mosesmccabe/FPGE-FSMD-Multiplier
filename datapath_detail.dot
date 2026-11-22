@@ -1,0 +1,20 @@
+digraph DP {
+  graph [rankdir=LR, bgcolor="white", pad="0.3", nodesep="0.4", ranksep="0.65", splines=polyline, fontname="DejaVu Sans", fontsize=17, label="Repeated-addition datapath | conceptual RTL hardware", labelloc=t];
+  node [shape=box, style="rounded,filled", color="#52647b", fillcolor="#f1f5f9", fontname="DejaVu Sans", fontsize=12, margin="0.16,0.12"];
+  edge [fontname="DejaVu Sans", fontsize=10, arrowsize=0.75, color="#65758b"];
+  A [label="A[3:0]"];
+  B [label="B[3:0]"];
+  a_reg [label="A_reg [3:0]\n4 flip-flops",fillcolor="#e6f4ec",color="#4e956c"];
+  b_reg [label="count [3:0]\n4 flip-flops",fillcolor="#e6f4ec",color="#4e956c"];
+  ext [label="zero-extend\n4 -> 8 bits"];
+  adder [label="8-bit ADD\n(2 CARRY4 in observed\n5-state synthesis)",fillcolor="#e7eefc",color="#4b75ab"];
+  decrement [label="count - 1\n4-bit decrementer",fillcolor="#e7eefc",color="#4b75ab"];
+  p_reg [label="product_reg [7:0]\n8 flip-flops",fillcolor="#e6f4ec",color="#4e956c"];
+  prod_out [label="PRODUCT[7:0]"];
+  flags [label="count_zero=(count==0)\nlast_iteration=(count==1)"];
+  ctrl [label="Controller controls\nload_operands / run_step",fillcolor="#fff3dd",color="#b57920"];
+  A -> a_reg; a_reg -> ext; ext -> adder; adder -> p_reg [label="RUN: add"];
+  p_reg -> adder [label="current sum",constraint=false]; p_reg -> prod_out;
+  B -> b_reg; b_reg -> decrement; decrement -> b_reg [label="RUN: update",constraint=false]; b_reg -> flags;
+  ctrl -> p_reg [label="LOAD: clear / RUN: add",style=dashed]; ctrl -> a_reg [label="LOAD: capture",style=dashed]; ctrl -> b_reg [label="LOAD: B",style=dashed];
+}

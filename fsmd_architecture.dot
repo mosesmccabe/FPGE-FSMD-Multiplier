@@ -1,0 +1,36 @@
+digraph Architecture {
+  graph [rankdir=LR, bgcolor="white", pad="0.32", nodesep="0.48", ranksep="0.7", splines=polyline, fontname="DejaVu Sans", fontsize=18, label="Six-state FSMD multiplier | logical architecture", labelloc=t, labeljust=l];
+  node [shape=box, fontname="DejaVu Sans", fontsize=12, style="rounded,filled", color="#52647b", fillcolor="#f3f6fb", margin="0.18,0.12", penwidth=1.2];
+  edge [fontname="DejaVu Sans", fontsize=10, color="#59687b", arrowsize=0.7];
+  start [label="START\n1-bit", fillcolor="#fff3dd", color="#b57920"];
+  ab [label="A[3:0], B[3:0]\n4-bit operands", fillcolor="#fff3dd", color="#b57920"];
+  rst [label="rst / clk\nshared reset & clock", fillcolor="#edf4ef", color="#538268"];
+  subgraph cluster_control {
+    label="CONTROLLER  |  Moore FSM"; labeljust=l; fontsize=14; color="#9bb4d8"; style="rounded";
+    controller [label="Six-state controller\nIDLE  LOAD  CHECK\nRUN  DONE  WAIT_RELEASE", fillcolor="#e6f0ff", color="#4779b5"];
+  }
+  subgraph cluster_data {
+    label="DATAPATH  |  registers + combinational logic"; labeljust=l; fontsize=14; color="#8eb49c"; style="rounded";
+    operand [label="A_reg [3:0]\noperand register", fillcolor="#eaf5ef",color="#4d9469"];
+    counter [label="count [3:0]\nB load / decrement", fillcolor="#eaf5ef",color="#4d9469"];
+    adder [label="8-bit accumulator adder\nproduct_reg + zero_extend(A_reg)", fillcolor="#eaf5ef",color="#4d9469"];
+    product [label="product_reg [7:0]\nreset / load zero / add", fillcolor="#eaf5ef",color="#4d9469"];
+    {rank=same; operand; counter;}
+    operand -> adder [label="A"];
+    adder -> product [label="sum"];
+    product -> adder [label="feedback", constraint=false];
+  }
+  product_out [label="PRODUCT[7:0]", fillcolor="#fff3dd", color="#b57920"];
+  done_out [label="DONE\none-cycle pulse", fillcolor="#fff3dd", color="#b57920"];
+  start -> controller [label="request"];
+  ab -> operand [label="A"];
+  ab -> counter [label="B"];
+  controller -> operand [label="load_operands", color="#4478bd"];
+  controller -> counter [label="load / run_step", color="#4478bd"];
+  controller -> product [label="load / run_step", color="#4478bd"];
+  counter -> controller [label="count_zero / last_iteration", color="#2d8d59", constraint=false];
+  controller -> done_out;
+  product -> product_out;
+  rst -> controller [style=dashed, constraint=false];
+  rst -> operand [style=dashed, constraint=false];
+}

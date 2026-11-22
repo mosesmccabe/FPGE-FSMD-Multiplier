@@ -1,0 +1,23 @@
+digraph FSM {
+ graph [rankdir=LR, bgcolor="white", pad="0.30", nodesep="0.6", ranksep="0.85", splines=true, fontname="DejaVu Sans", fontsize=17, label="Six-state Moore controller | state transition diagram", labelloc=t];
+ node [shape=ellipse, style="filled", color="#7891b0", fillcolor="#f2f6fc", fontname="DejaVu Sans", fontsize=13, penwidth=1.6, margin="0.23,0.14"];
+ edge [fontname="DejaVu Sans", fontsize=11, color="#607087", arrowsize=0.75, penwidth=1.4];
+ IDLE [fillcolor="#e8f2fc", color="#4779b5"];
+ LOAD;
+ CHECK;
+ RUN;
+ DONE [fillcolor="#fceedd", color="#b37b27", label="DONE\ndone=1"];
+ WAIT_RELEASE [fillcolor="#e7f7e8",color="#47805c", label="WAIT_RELEASE\nstart release required"];
+ IDLE -> LOAD [label="start=1"];
+ IDLE -> IDLE [label="start=0"];
+ LOAD -> CHECK;
+ CHECK -> DONE [label="count_zero=1"];
+ CHECK -> RUN [label="count_zero=0"];
+ RUN -> RUN [label="last_iteration=0"];
+ RUN -> DONE [label="last_iteration=1"];
+ DONE -> WAIT_RELEASE;
+ WAIT_RELEASE -> WAIT_RELEASE [label="start=1"];
+ WAIT_RELEASE -> IDLE [label="start=0"];
+ reset [shape=note, label="Asynchronous rst=1\nforces state to IDLE\nfrom any state",fillcolor="#f9f4f4",color="#a67c7c",fontsize=10];
+ reset -> IDLE [style=dashed, color="#a67c7c",label="reset"];
+}

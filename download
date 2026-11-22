@@ -1,0 +1,34 @@
+# AMD Vivado generated content
+.Xil/
+*.jou
+*.log
+*.str
+*.pb
+*.wdb
+*.wcfg
+*.cache/
+*.runs/
+*.sim/
+*.hw/
+*.ip_user_files/
+*.gen/
+*.srcs/
+*.Xil/
+*.bin
+*.bit
+*.ltx
+*.dcp
+*.rpt
+*.vcd
+*.vpd
+*.db
+*.bak
+*.backup
+*.tmp
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+__pycache__/
