@@ -1,8 +1,8 @@
-# Multi-Cycle FSMD Multiplier | FPGA Engineering — Week 3
+# Multi-Cycle FSMD Multiplier | FPGA Engineering 
 
 > **Status:** Six-state RTL and behavioral verification complete. Updated six-state synthesis/implementation evidence is pending.  
 > **Target platform:** Digilent Basys 3 (Xilinx Artix-7 XC7A35T) · **Tools:** AMD Vivado, SystemVerilog  
-> **Course:** 8-Week FPGA Engineering Foundation · **Topic:** Finite State Machines and Digital Control
+
 
 A small but fully verified **unsigned 4-bit × 4-bit multiplier** implemented using a **finite-state machine with datapath (FSMD)**. Instead of using a single combinational multiplication operator, the hardware computes the result with **repeated addition**, a decrementing loop counter, and a Moore-style controller.
 
@@ -227,7 +227,7 @@ See [`docs/CAPTURE_GUIDE.md`](docs/CAPTURE_GUIDE.md) for exact instructions to a
 
 ## Next step
 
-**Day 14 — Interface protocols and READY:** extend the controller interface with a `ready` signal and define exactly when a caller may submit a new request. Follow that with new directed and self-checking testbench cases and updated six-state synthesis artifacts.
+**Interface protocols and READY:** extend the controller interface with a `ready` signal and define exactly when a caller may submit a new request. Follow that with new directed and self-checking testbench cases and updated six-state synthesis artifacts.
 
 ---
 
